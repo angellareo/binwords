@@ -23,7 +23,20 @@
  * @param[in]       length   longitud de palabras en estructura expresada en bits    
  * @param[in]       maxWords máximo de palabras a almacenar en la estructura  
 */
-int wbInit(WordsBuffer* wb, int length, int maxWords, int overlap=-1){
+int wbInit(WordsBuffer* wb, int length, int maxWords){
+    wb->insert=wb->words;
+    wb->init=wb->words;
+    wb->check = wb->words;
+    wb->bb.wordLength=length;
+    wb->numWords=0;
+    wb->maxWords=maxWords; //Calculated from the GUI
+    wb->bb.init = wb->bb.bits;
+    wb->bb.insert = wb->bb.bits;
+	wb->overlap = -1;
+    return OK;
+}
+
+int wbInit_overlap(WordsBuffer* wb, int length, int maxWords, int overlap){
     if (overlap>=length)
         return ERR;
 
@@ -130,10 +143,10 @@ int wbStoreWord (WordsBuffer *wb){
     wordResult = wbBits2Int(wb);
 	
     //Advance bit init
-    if (overlap==-1)
+    if (wb->overlap==-1)
         bbAdvancePtr(&(wb->bb),&(wb->bb.init));
     else{
-        for (i=0; i<=(wb->bb.wordLength - overlap); ++i)
+        for (i=0; i<=(wb->bb.wordLength - wb->overlap); ++i)
             bbAdvancePtr(&(wb->bb),&(wb->bb.init));
     }
 

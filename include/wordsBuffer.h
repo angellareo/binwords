@@ -67,6 +67,7 @@ typedef struct
 
 void wbCreateHistogram (WordsBuffer* wb, int* results);
 int wbInit(WordsBuffer* wb, int length, int maxWords);
+int wbInit_overlap(WordsBuffer* wb, int length, int maxWords, int overlap);
 int wbBitInsert(WordsBuffer* wb, char bit);  //Inserts bit on BitBuffer
 int wbWordInsert (WordsBuffer* wb, int word);
 int wbStoreWord (WordsBuffer *wb); //Transformation Bits 2 Double done here
