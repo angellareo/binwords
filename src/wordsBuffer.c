@@ -109,9 +109,9 @@ int wbWordInsert (WordsBuffer* wb, int word){ //Inserts word on WordsBuffer
 	wb->check=wb->insert;
     wb->numWords++; 
 
-    if (wb->insert == wb->words+wb->maxWords){
+    if (wb->insert == wb->words+wb->maxWords-1){
         wb->insert = wb->words;
-        if (wb->init == wb->words+wb->maxWords) wb->init = wb->words;
+        if (wb->init == wb->words+wb->maxWords-1) wb->init = wb->words;
         else wb->init++;
     } else wb->insert++;
 
