@@ -6,4 +6,4 @@
 -*BitsBuffer*: a circular buffer of bits. It stores the stream of bits. Its size is equal to the predetermined length of the code word. Once a new word is completed after the arrival of its last bit, the contents of this buffer is used to compute the word decimal value, which is stored in another data structure (WordsBuffer).
 -*WordsBuffer*: a circular buffer of integers (or long integers). It stores the decimal values of the code words obtained from the processed binary signal. Overlapping between consecutive words can be managed by setting wb->overlap to the desired number of overlapping bits between words.
 
-A histogram of code words stored in *WordsBuffer* after processing a binary signal can be obtained using the function wbGetHistogram.
+A histogram of code words stored in *WordsBuffer* after processing a binary signal can be obtained using the function wbCreateHistogram.
