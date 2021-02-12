@@ -4,7 +4,7 @@
  * @date 1-2014
  * @author Angel Lareo
  * 
- * @brief Archivo con las funciones de operación de la estructura WordsBuffer
+ * @brief Implementation of WordsBuffer structure functions
 */
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -14,14 +14,14 @@
 #include "wordsBuffer.h"
 
 /**
- * Inicializa los valores y punteros de la estructura WordsBuffer
+ * WordsBuffer constructor
  * 
  * @author Ángel Lareo
  * @date 1/2013
  * 
- * @param[in,out]   wb       puntero a la estructura a rellenar
- * @param[in]       length   longitud de palabras en estructura expresada en bits    
- * @param[in]       maxWords máximo de palabras a almacenar en la estructura  
+ * @param[in,out]   wb       pointer to WordsBuffer
+ * @param[in]       length   word length in bits    
+ * @param[in]       maxWords max number of words to store
 */
 int wbInit(WordsBuffer* wb, int length, int maxWords){
     wb->insert=wb->words;
@@ -29,7 +29,7 @@ int wbInit(WordsBuffer* wb, int length, int maxWords){
     wb->check = wb->words;
     wb->bb.wordLength=length;
     wb->numWords=0;
-    wb->maxWords=maxWords; //Calculated from the GUI
+    wb->maxWords=maxWords;
     wb->bb.init = wb->bb.bits;
     wb->bb.insert = wb->bb.bits;
 	wb->overlap = -1;
@@ -65,12 +65,12 @@ void wbCreateHistogram (WordsBuffer* wb, int* results){
 }
 
 /**
- * Inicializa los valores y punteros de la estructura WordsBuffer
+ * Insert new bit in WordsBuffer
  * 
  * @author Ángel Lareo
  * @date 1/2013
  * 
- * @param[in,out]   wb      puntero a la estructura a rellenar
+ * @param[in,out]   wb      pointer to WordsBuffer
  * @param[in]       bit     bit a introducir
 */
 int wbBitInsert(WordsBuffer* wb, char bit){  //Inserts bit on BitBuffer
@@ -81,13 +81,13 @@ int wbBitInsert(WordsBuffer* wb, char bit){  //Inserts bit on BitBuffer
 }
 
 /**
- * Avanza el puntero en la estructura de bits, convirtiéndola en un buffer circular
+ * Forward insert pointer, circular buffer
  * 
  * @author Ángel Lareo
  * @date 1/2013
  * 
- * @param[in]   bb      puntero a la estructura a rellenar
- * @param[in,out]       ptr     puntero a avanzar
+ * @param[in]   wb      pointer to WordsBuffer
+ * @param[in,out]       ptr     insert pointer to advance
 */
 void bbAdvancePtr (BitsBuffer* bb, char** ptr){
     if (*ptr==&(bb->bits[bb->wordLength-1])) *ptr = bb->bits;
@@ -95,13 +95,13 @@ void bbAdvancePtr (BitsBuffer* bb, char** ptr){
 }
 
 /**
- * Inserta una palabra con el valor de word en la estructura WordsBuffer
+ * Inserts word in WordsBuffer structure
  * 
  * @author Ángel Lareo
  * @date 1/2013
  * 
- * @param[in,out]   wb      puntero a la estructura a rellenar
- * @param[in]       word    valor de la palabra
+ * @param[in,out]   wb      pointer to WordsBuffer
+ * @param[in]       word    word value
 */
 int wbWordInsert (WordsBuffer* wb, int word){ //Inserts word on WordsBuffer
                                                  //Called by StoreWord
@@ -119,18 +119,18 @@ int wbWordInsert (WordsBuffer* wb, int word){ //Inserts word on WordsBuffer
 }
 
 /**
- * Inserta la palabra almacenada en el buffer de bits de la estructura en el buffer de palabras.
- * Para ello primero realiza una transformacion de bits a entero.
- * Si no se han introducido suficientes bits para establecer una palabra, devuelve ERR.
+ * Converts to decimal value the code word in BitsBuffer and stores it in WordsBuffer
+ * It performs bits to integer transformation calling wbBits2Int(wb)
+ * ERR if there is no word in the bits buffer
  * 
  * @author Ángel Lareo
- * @date 1/2014
+ * @date 1/2013
  * 
  * @see wbWordInsert
  * 
- * @param[in,out]   wb      puntero a la estructura donde se insertará la palabra
+ * @param[in,out]   wb      pointer to WordsBuffer
  * 
- * @return retorna el valor entero de la palabra o ERR
+ * @return word value or ERR
 */
 int wbStoreWord (WordsBuffer *wb){ 
 	int wordResult;
@@ -224,6 +224,15 @@ int wbGetWordInt(WordsBuffer *wb){
     return wbBits2Int(wb);
 }
 
+/**
+ * Check if the bits in BitsBuffer matched with the one received as an argument
+ * 
+ * @author Ángel Lareo
+ * @date 1/2013
+ * 
+ * @param[in]   wb      pointer to WordsBuffer
+ * @param[in]   word    binary code word to check matching
+*/
 void wbGetWordChar(char* bbOut, WordsBuffer *wb){
     char *auxPtr;
 	int i, exp;

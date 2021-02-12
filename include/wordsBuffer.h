@@ -4,29 +4,27 @@
  * @date 1-2013
  * @author Angel Lareo
  * 
- * @brief Definicion de la estructura WordsBuffer y sus funciones de operación
+ * @brief Definition of WordsBuffer and its functions
 */
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __WORDS_BUFFER__
 #define __WORDS_BUFFER__
 
-#define MAX_WORDS_BUFF 120000
+#define MAX_WORDS_BUFF 60000
 
 #define NOT_INITIATED -2
 #define ERR -1
 #define OK 0
 
-#define MAX_BITS_WORD 25
+#define MAX_BITS_WORD 10
 #define MAX_WORDS 1024
 
 typedef int WbElement;
 
 /**
  * *struct BitsBuffer
- * @brief Definicion de la estructura BitsBuffer encargada de almacenar los bits
- * Funciona como un buffer circular de tamaño igual al de una palabra
- * El tamaño de palabra es definido por el usuario en GUI
+ * @brief Bitsbuffer definition. Circular buffer that stores the bits which form the word
  * 
  * @author Ángel Lareo
  * @date 1/2013
@@ -43,12 +41,8 @@ typedef struct
 
 /**
  * *struct WordsBuffer
- * @brief Definicion de la structura de WordsBuffer para almacenamiento de palabras
- * Array de palabras binarias almacenadas como enteros.
- * Consta de un BitsBuffer que almacena los bits de palabra temporalmente.
- * El máximo número de palabras viene definido por el usuario en GUI.
- * Si la ejecución del programa continua tras el almacenamiento del total de palabras,
- * las palabras iniciales se eliminarán secuencialmente.
+ * @brief WordsBuffer definition that store the words as integer values
+ * It uses BitsBuffer to store bits temporarilly
  * 
  * @author Ángel Lareo
  * @date 12/2012
@@ -59,25 +53,22 @@ typedef struct
     BitsBuffer bb;
     int maxWords;
     int numWords;
-    int overlap;
     WbElement* init;
     WbElement* insert;
     WbElement* check;    
 } WordsBuffer;
 
-void wbCreateHistogram (WordsBuffer* wb, int* results);
+void wbCreateHistogram (WordsBuffer* wb, int* results, int numWords);
+int* wbGetHistogram (WordsBuffer* wb, int numWords);
 int wbInit(WordsBuffer* wb, int length, int maxWords);
-int wbInit_overlap(WordsBuffer* wb, int length, int maxWords, int overlap);
 int wbBitInsert(WordsBuffer* wb, char bit);  //Inserts bit on BitBuffer
 int wbWordInsert (WordsBuffer* wb, int word);
 int wbStoreWord (WordsBuffer *wb); //Transformation Bits 2 Double done here
 int wbCheckWordMatch(WordsBuffer *wb, char *word);
 int wbBits2Int(WordsBuffer *wb);
 int Bits2Int(char* bb, int length); 
-int wbRestartBitBuff(WordsBuffer *wb);
+
 void bbAdvancePtr (BitsBuffer* bb, char** ptr);
 
-int wbGetWordInt(WordsBuffer *wb);
-void wbGetWordChar(char* bbOut, WordsBuffer *wb);
 #endif
 
